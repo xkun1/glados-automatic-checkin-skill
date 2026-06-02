@@ -2,7 +2,7 @@
 name: glados-automatic-checkin
 description: Complete blueprint for GLaDOS & Railgun multi-account check-in automation. Includes production Python scripts, cron wrappers, PushDeer integration, and strict troubleshooting guides.
 version: 1.1.0
-author: 程序员Devil & Hermes Agent
+author: 坤哥 & Hermes Agent
 license: MIT
 platforms: [linux, macos]
 metadata:
@@ -363,17 +363,6 @@ exit 0
 
 3. **Multi-Domain Failover Strategy**
    - Accounts are unified across GLaDOS subdomains. Do not fail the whole cron execution if a secondary domain (e.g. `railgun.info` or `glados.cloud`) fails, as long as **at least one** primary endpoint reports `SUCCESS` or `Already Checked In`.
-
-4. **WeChat Login QR Verification and Margins (Quiet Zone)**
-   - **Problem**: When rendering browser-derived base64 QR codes to WeChat scanners, scanning fails silently.
-   - **Cause**: Mobile camera scanners rely on a solid white margin of 4 modules (~80px wide) called the *Quiet Zone* to lock onto contrast markers.
-   - **Fix**: Always pad base64-decoded images using Python PIL before rendering:
-     ```python
-     from PIL import Image, ImageOps
-     img = Image.open(BytesIO(base64.b64decode(b64_img)))
-     padded = ImageOps.expand(img, border=80, fill="white")
-     padded.save("padded_qr.png", "PNG")
-     ```
 
 ---
 
