@@ -8,6 +8,9 @@ from dataclasses import dataclass, asdict
 from pypushdeer import PushDeer
 from logging_config import init_logger
 
+# 初始化日志 (Crucial Fix: Define logger globally!)
+logger = init_logger()
+
 class CheckinStatus(Enum):
     SUCCESS = 0
     REPEAT = 1
