@@ -5,7 +5,7 @@
 ---
 
 ## 📖 什么是 Hermes Agent Skill？
-[Hermes Agent](https://hermes-agent.nousresearch.com/) 是一个前沿的 AI 智能体框架。技能（Skill）是其程序性记忆的载体。
+[Hermes Agent](https://hermes-agent.nousresearch.com/) 是一个前沿的 AI 智能体框架。技能（Skill）是其程序性记忆 of capabilities 的载体。
 本项目中的 `SKILL.md` 遵循 Hermes 技能规范编写，将其导入到 Hermes Agent 后，**您的 AI 助手便能瞬间学会如何帮您配置、维护以及自动排查 GLaDOS 签到脚本的任何异常**。
 
 ---
@@ -18,7 +18,7 @@
   - 支持积攒到指定点数（如 500 积分）自动兑换套餐。
   - 支持 PushDeer 实时移动端消息推送。
 * **`scripts/checkin.sh`**：专为 crontab 等定时任务设计的 Shell 守护包装脚本，支持 3 次重试避错，成功后优雅返回 `exit 0`，失败时抛出异常。
-* **`scripts/logging_config.py`**：日志格式化工具，自动规范转换为北京时间输出。
+* **`scripts/logging_config.py`** : 日志格式化工具，自动规范转换为北京时间输出。
 
 ---
 
@@ -54,22 +54,6 @@ crontab -e
 ```text
 30 8 * * * /bin/bash /path/to/scripts/checkin.sh >> /path/to/checkin.log 2>&1
 ```
-
----
-
-## 💡 开发者高频踩坑点 (Critical Pitfalls)
-
-在将该脚本公开或给自己使用时，请务必注意以下几点：
-
-1. **椭圆省略号 Cookie 截断陷阱 (`...`)**
-   - **症状**：请求一直返回 `{"code": -2, "message": "No permission"}`。
-   - **原因**：从微信、网页或聊天工具复制长 Cookie 字符串时，长文本经常会被 UI 自动用省略号 `...` 截断，导致 Cookie 损坏。
-   - **解决**：确保在环境变量中填入的 Cookie 绝对不包含连续的英文句号 `...`。
-
-2. **JSON 请求的 Content-Type 陷阱**
-   - **症状**：兑换套餐时服务器报错 `Plan type is required`。
-   - **原因**：在 Python 编写 POST 请求时，如果仅通过 `data=json.dumps(payload)` 传参而未在 Headers 中声明 `Content-Type: application/json`，部分服务器端会直接忽略 Body 导致传参失败。
-   - **解决**：在 requests 中使用 `json=payload` 参数，此方式会自动在请求头中追加 `application/json` 的 Content-Type 声明。
 
 ---
 
